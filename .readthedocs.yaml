@@ -3,15 +3,8 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
-  jobs:
-    pre_build:
-      - pip install -e .
-      - sphinx-apidoc -o docs/api amber
 sphinx:
   configuration: docs/conf.py
 python:
   install:
     - requirements: docs/requirements.txt
-formats:
-  - htmlzip
-  - pdf
