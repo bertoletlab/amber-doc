@@ -1,0 +1,7 @@
+sphinx>=7.1
+myst-parser
+sphinx-rtd-theme
+nbsphinx
+ipykernel
+sphinx-autodoc-typehints
+pandoc

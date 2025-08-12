@@ -1,0 +1,392 @@
+# Metadata for CONFIG keys (type, units, description, section). Update as needed.
+
+# --- Simulation --------------------------------------------------------------
+half_length_world:
+  section: Geometry
+  type: float
+  units: mm
+  description: Half side length of the cubic domain.
+voxel_per_side:
+  section: Geometry
+  type: int
+  units: voxels per half-length
+  description: Number of voxels along each half-length; determines resolution.
+dt:
+  section: Simulation
+  type: float
+  units: h
+  description: Time step.
+endtime:
+  section: Simulation
+  type: float
+  units: h
+  description: Total simulated time.
+seed:
+  section: Simulation
+  type: int
+  description: RNG seed; -1 randomizes per run.
+running_on_cluster:
+  section: I/O
+  type: bool
+  description: Toggled by shell scripts to suppress interactive plotting.
+
+# --- Initialization ----------------------------------------------------------
+vessel_number:
+  section: Initialization
+  type: float
+  units: 1/mm^2
+  description: Initial healthy-tissue vessel surface density.
+initial_number_tumor_cells:
+  section: Initialization
+  type: int
+  units: cells
+  description: Initial total number of tumor cells.
+tumor_initial_radius:
+  section: Initialization
+  type: float
+  units: mm
+  description: Initial tumor radius.
+doubling_time_tumor:
+  section: Initialization
+  type: float
+  units: h
+  description: Mean cell-cycle doubling time.
+doubling_time_sd:
+  section: Initialization
+  type: float
+  units: h
+  description: Standard deviation of the cell-cycle doubling time.
+radius_tumor_cells:
+  section: Initialization
+  type: float
+  units: mm
+  description: Effective cell radius for packing/occupancy.
+new_world:
+  section: Initialization
+  type: bool
+  description: Create a new world instead of loading from file.
+world_file:
+  section: Initialization
+  type: str
+  units: path-stem
+  description: World file name to create or load.
+save_world_every:
+  section: I/O
+  type: int
+  units: h
+  description: Snapshot interval for saving world state.
+
+# --- Radiation ---------------------------------------------------------------
+topas_file:
+  section: Radiation
+  type: str
+  units: path-stem
+  description: Basename for TOPAS/TOPAS-nBio dose map.
+irradiation_cell_based:
+  section: Radiation
+  type: bool
+  description: If true, trigger RT when tumor exceeds critical_n_cells; else use time based.
+first_irradiation_time:
+  section: Radiation
+  type: float
+  units: h
+  description: Start time for RT when time-based scheduling is used.
+critical_n_cells:
+  section: Radiation
+  type: int
+  units: cells
+  description: Cell-count threshold to start RT when cell-based scheduling is used.
+fractionation_schedule:
+  section: Radiation
+  type: str
+  units: path (csv)
+  description: CSV with dose per fraction (Gy) vs day/time; first entry 0 to start immediately.
+number_fractions:
+  section: Radiation
+  type: int
+  description: Number of fractions (used when not supplying a schedule file).
+time_between_fractions:
+  section: Radiation
+  type: float
+  units: h
+  description: Spacing between fractions (used when not supplying a schedule file).
+irradiation_intensity:
+  section: Radiation
+  type: float
+  units: h
+  description: Duration of each irradiation event.
+intra_radiosensitivity:
+  section: Radiation
+  type: float
+  units: 1/Gy
+  description: Cell damage per unit dose.
+vessel_radiosensitivity:
+  section: Radiation
+  type: float
+  units: 1/Gy
+  description: Vessel death per unit dose.
+repair_per_hour:
+  section: Radiation
+  type: float
+  units: 1/h
+  description: Recovery rate of sublethal damage.
+necrosis_damage_coeff:
+  section: Radiation
+  type: float
+  units: fraction
+  description: Necrosis proportion attributable to radiation damage.
+apoptosis_damage_coeff:
+  section: Radiation
+  type: float
+  units: fraction
+  description: Apoptosis proportion attributable to radiation damage.
+
+# --- Dynamics / Cells --------------------------------------------------------
+max_occupancy:
+  section: Dynamics
+  type: float
+  units: fraction
+  description: Occupancy threshold that blocks migration into a voxel.
+vitality_cycling_threshold:
+  section: Dynamics
+  type: float
+  units: fraction
+  description: Vitality threshold above which cells start cycling.
+vitality_apoptosis_threshold:
+  section: Dynamics
+  type: float
+  units: fraction
+  description: Vitality threshold below which apoptosis can occur (do not set 0).
+vitality_necrosis_threshold:
+  section: Dynamics
+  type: float
+  units: fraction
+  description: Vitality threshold below which necrosis can occur.
+probability_apoptosis:
+  section: Dynamics
+  type: float
+  units: 1/h
+  description: Probability per hour of apoptosis when under the threshold.
+probability_necrosis:
+  section: Dynamics
+  type: float
+  units: 1/h
+  description: Probability per hour of necrosis when under the threshold.
+probability_necrosis_removal:
+  section: Dynamics
+  type: float
+  units: 1/h
+  description: Necrotic cell clearance rate.
+probability_apoptosis_removal:
+  section: Dynamics
+  type: float
+  units: 1/h
+  description: Apoptotic cell clearance rate.
+viscosity:
+  section: Dynamics
+  type: float
+  description: Diffusive migration scaling factor.
+pressure_coefficient_central_migration:
+  section: Dynamics
+  type: float
+  units: cells/(mm·h)
+  description: Coefficient for inward migration under pressure.
+
+# --- VEGF / Oxygen -----------------------------------------------------------
+VEGF_production_per_cell:
+  section: VEGF/Oxygen
+  type: float
+  units: arb/(cell·h)
+  description: VEGF production rate per living cell.
+VEGF_production_threshold:
+  section: VEGF/Oxygen
+  type: float
+  units: fraction
+  description: Vitality threshold to start VEGF secretion.
+vegf_map_step_gradient:
+  section: VEGF/Oxygen
+  type: float
+  units: mm
+  description: Step size for VEGF map updates.
+
+# --- Angiogenesis / Vasculature ---------------------------------------------
+lower_pressure_threshold_step:
+  section: Vasculature
+  type: float
+  units: fraction
+  description: Reference pressure below which step size remains unchanged.
+higher_pressure_threshold_step:
+  section: Vasculature
+  type: float
+  units: fraction
+  description: Pressure at which growth step size becomes zero.
+radius_root_vessels:
+  section: Vasculature
+  type: float
+  units: mm
+  description: Radius of terminal root vessels.
+radius_killing_threshold:
+  section: Vasculature
+  type: float
+  units: mm
+  description: Vessel radius threshold for pruning/killing.
+radius_decrease_exponent:
+  section: Vasculature
+  type: float
+  description: Exponent for pressure-driven radius decrease.
+n_capillaries_per_VVD:
+  section: Vasculature
+  type: float
+  units: 1/mm^3
+  description: Capillary density per volume.
+capillary_length:
+  section: Vasculature
+  type: float
+  units: mm
+  description: Capillary length influencing diffusion averaging steps.
+vegf_gradient_threshold:
+  section: Vasculature
+  type: float
+  units: fraction
+  description: Minimum VEGF gradient for growth.
+vegf_scalar_threshold:
+  section: Vasculature
+  type: float
+  units: fraction
+  description: Minimum VEGF level for growth.
+splitting_rate_vasculature:
+  section: Vasculature
+  type: float
+  units: 1/step
+  description: Probability of splitting a vessel during growth.
+macro_steps:
+  section: Vasculature
+  type: float
+  units: steps/h
+  description: Macro steps per hour for growth.
+micro_steps:
+  section: Vasculature
+  type: int
+  units: steps/macro
+  description: Micro steps per macro step.
+weight_direction:
+  section: Vasculature
+  type: float
+  description: Weight of directional persistence.
+weight_vegf:
+  section: Vasculature
+  type: float
+  description: Weight of VEGF gradient cue.
+weight_pressure:
+  section: Vasculature
+  type: float
+  description: Weight of pressure cue.
+radius_pressure_sensitive:
+  section: Vasculature
+  type: bool
+  description: Enable radius reduction under pressure.
+o2_to_vitality_factor:
+  section: Vasculature
+  type: float
+  description: Conversion factor from capillary metrics to vitality.
+vessel_step_size:
+  section: Vasculature
+  type: float
+  units: mm
+  description: Step size for growth updates.
+growth_step_stop_threshold:
+  section: Vasculature
+  type: float
+  units: mm
+  description: Growth halts when step size falls below this threshold.
+vessel_time_to_maturity:
+  section: Vasculature
+  type: float
+  units: h
+  description: Time for a new vessel segment to mature.
+maturity_new_vessels:
+  section: Vasculature
+  type: float
+  units: fraction
+  description: Initial maturity assigned to new vessels.
+new_vessels_per_hour:
+  section: Vasculature
+  type: float
+  units: 1/(mm^3·h)
+  description: Rate of de novo vessel seeding per volume.
+file_prefix_alpha_beta_maps:
+  section: Radiation
+  type: str
+  description: Prefix for alpha/beta map functions (e.g., 'save' sigmoid, 'newfunction' quadratic).
+metabolic_damage_threshold:
+  section: Dynamics
+  type: float
+  units: fraction
+  description: Damage threshold below which metabolism/VEGF stays off.
+o2_off:
+  section: VEGF/Oxygen
+  type: bool
+  description: Disable oxygen coupling (all cells behave as if no O2).
+
+# --- Visualization -----------------------------------------------------------
+show_time_steps:
+  section: Graphics
+  type: bool
+  description: Overlay time on renders.
+show_final:
+  section: Graphics
+  type: bool
+  description: Show final state.
+show_slices:
+  section: Graphics
+  type: bool
+  description: Show 2D slice during simulation.
+slice:
+  section: Graphics
+  type: str
+  choices: [x, z]
+  description: Slice orientation.
+show_o2_vitality_histograms:
+  section: Graphics
+  type: bool
+  description: Plot histograms of oxygen/vitality.
+show_tumor_and_vessels_3D:
+  section: Graphics
+  type: bool
+  description: Render vessels and tumor in 3D.
+visible_original_vessels:
+  section: Graphics
+  type: bool
+  description: Toggle original healthy vasculature visibility.
+show_alpha_beta_maps:
+  section: Graphics
+  type: bool
+  description: Visualize spatial alpha/beta parameter maps.
+show_cell_and_tumor_volume:
+  section: Graphics
+  type: bool
+  description: Plot cell and tumor volumes over time.
+verbose:
+  section: Graphics
+  type: bool
+  description: Verbose logging for plotting.
+show_angiogenesis_metrics:
+  section: Graphics
+  type: bool
+  description: Output angiogenesis metrics.
+true_vasculature:
+  section: Graphics
+  type: bool
+  description: Use true vasculature geometry if available.
+show_3D_mesh:
+  section: Graphics
+  type: bool
+  description: Render 3D mesh of tumor domain.
+show_center_of_mass:
+  section: Graphics
+  type: bool
+  description: Mark tumor center of mass.
+show_cell_damage:
+  section: Graphics
+  type: bool
+  description: Visualize per-cell damage.

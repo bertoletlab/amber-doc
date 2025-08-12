@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: AMBER: A Modular Model for Tumor Growth, Vasculature and Radiation Response
+authors:
+  - family-names: Kunz
+    given-names: Louis V
+  - family-names: Bosque
+    given-names: Jesús J
+  - family-names: Nikmaneshi
+    given-names: Mohammad
+  - family-names: Chamseddine
+    given-names: Ibrahim
+  - family-names: Munn
+    given-names: Lance L
+  - family-names: Schuemann
+    given-names: Jan
+  - family-names: Paganetti
+    given-names: Harald
+  - family-names: Bertolet
+    given-names: Alejandro
+identifiers:
+  - type: doi
+    value: 10.1007/s11538-024-01371-4
+repository-code: https://github.com/bertoletlab/AMBER
+url: https://github.com/bertoletlab/AMBER
+message: Please cite this paper if you use AMBER in your work.

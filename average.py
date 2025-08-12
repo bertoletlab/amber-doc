@@ -1,0 +1,1 @@
+"""Averaging and smoothing helpers for time series and spatial fields."""
